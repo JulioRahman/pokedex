@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import com.kencur.pokedex.R
 import com.kencur.pokedex.databinding.ActivityDetailBinding
-import com.kencur.pokedex.model.Pokemon
+import com.kencur.pokedex.model.PokemonInfo
 import com.skydoves.bindables.BindingActivity
 import com.skydoves.bundler.bundleNonNull
 import com.skydoves.bundler.intentOf
@@ -23,27 +23,27 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     @get:VisibleForTesting
     internal val viewModel: DetailViewModel by viewModels {
-        DetailViewModel.provideFactory(detailViewModelFactory, pokemonItem.name)
+        DetailViewModel.provideFactory(detailViewModelFactory, pokemonInfoItem)
     }
 
-    private val pokemonItem: Pokemon by bundleNonNull(EXTRA_POKEMON)
+    private val pokemonInfoItem: PokemonInfo by bundleNonNull(EXTRA_POKEMON_INFO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         onTransformationEndContainerApplyParams(this)
         super.onCreate(savedInstanceState)
         binding {
-            pokemon = pokemonItem
+            pokemonInfo = pokemonInfoItem
             vm = viewModel
         }
     }
 
     companion object {
         @VisibleForTesting
-        internal const val EXTRA_POKEMON = "EXTRA_POKEMON"
+        internal const val EXTRA_POKEMON_INFO = "EXTRA_POKEMON_INFO"
 
-        fun startActivity(transformationLayout: TransformationLayout, pokemon: Pokemon) =
+        fun startActivity(transformationLayout: TransformationLayout, pokemonInfo: PokemonInfo) =
             transformationLayout.context.intentOf<DetailActivity> {
-                putExtra(EXTRA_POKEMON to pokemon)
+                putExtra(EXTRA_POKEMON_INFO to pokemonInfo)
                 TransformationCompat.startActivity(transformationLayout, intent)
             }
     }

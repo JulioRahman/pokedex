@@ -3,8 +3,8 @@ package com.kencur.pokedex.ui.main
 import androidx.annotation.MainThread
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
-import com.kencur.pokedex.model.Pokemon
-import com.kencur.pokedex.repository.MainRepository
+import com.kencur.pokedex.model.PokemonInfo
+import com.kencur.pokedex.repository.PokedexRepository
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.asBindingProperty
 import com.skydoves.bindables.bindingProperty
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val mainRepository: MainRepository
+    private val pokedexRepository: PokedexRepository
 ) : BindingViewModel() {
 
     @get:Bindable
@@ -28,8 +28,8 @@ class MainViewModel @Inject constructor(
         private set
 
     private val pokemonFetchingIndex: MutableStateFlow<Int> = MutableStateFlow(0)
-    private val pokemonListFlow = pokemonFetchingIndex.flatMapLatest { page ->
-        mainRepository.fetchPokemonList(
+    private val pokemonInfoListFlow = pokemonFetchingIndex.flatMapLatest { page ->
+        pokedexRepository.fetchPokemonInfoList(
             page = page,
             onStart = { isLoading = true },
             onComplete = { isLoading = false },
@@ -38,7 +38,10 @@ class MainViewModel @Inject constructor(
     }
 
     @get:Bindable
-    val pokemonList: List<Pokemon> by pokemonListFlow.asBindingProperty(viewModelScope, emptyList())
+    val pokemonInfoList: List<PokemonInfo> by pokemonInfoListFlow.asBindingProperty(
+        viewModelScope,
+        emptyList()
+    )
 
     init {
         Timber.d("init MainViewModel")

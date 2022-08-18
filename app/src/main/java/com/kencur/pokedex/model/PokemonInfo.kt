@@ -1,14 +1,18 @@
 package com.kencur.pokedex.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlin.random.Random
+import kotlinx.parcelize.Parcelize
 
 @Entity
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class PokemonInfo(
+
+    var page: Int = 0,
 
     @field:Json(name = "id") @PrimaryKey
     val id: Int,
@@ -28,55 +32,49 @@ data class PokemonInfo(
     @field:Json(name = "types")
     val types: List<TypeResponse>,
 
-    val hp: Int = Random.nextInt(maxHp),
+    @field:Json(name = "stats")
+    val stats: List<Stat>,
 
-    val attack: Int = Random.nextInt(maxAttack),
-
-    val defense: Int = Random.nextInt(maxDefense),
-
-    val speed: Int = Random.nextInt(maxSpeed),
-
-    val exp: Int = Random.nextInt(maxExp)
-) {
+    @field:Json(name = "sprites")
+    val sprites: Sprites
+) : Parcelable {
 
     fun getIdString(): String = String.format("#%03d", id)
 
-    fun getWeightString(): String = String.format("%.1f KG", weight.toFloat() / 10)
+    fun getHeightString(): String = String.format("%d cm", height.times(10))
 
-    fun getHeightString(): String = String.format("%.1f M", height.toFloat() / 10)
+    fun getWeightString(): String = String.format("%.1f kg", weight.div(10.0f))
 
-    fun getHpString(): String = "$hp/$maxHp"
+    fun getHp(): Int = stats[0].value
 
-    fun getAttackString(): String = "$attack/$maxAttack"
+    fun getAttack(): Int = stats[1].value
 
-    fun getDefenseString(): String = "$defense/$maxDefense"
+    fun getDefense(): Int = stats[2].value
 
-    fun getSpeedString(): String = "$speed/$maxSpeed"
+    fun getSpAttack(): Int = stats[3].value
 
-    fun getExpString(): String = "$exp/$maxExp"
+    fun getSpDefense(): Int = stats[4].value
 
-    @JsonClass(generateAdapter = true)
-    data class TypeResponse(
+    fun getSpeed(): Int = stats[5].value
 
-        @field:Json(name = "slot")
-        val slot: Int,
+    fun getHpString(): String = getHp().toString()
 
-        @field:Json(name = "type")
-        val type: Type
-    )
+    fun getAttackString(): String = getAttack().toString()
 
-    @JsonClass(generateAdapter = true)
-    data class Type(
+    fun getDefenseString(): String = getDefense().toString()
 
-        @field:Json(name = "name")
-        val name: String
-    )
+    fun getSpAttackString(): String = getSpAttack().toString()
+
+    fun getSpDefenseString(): String = getSpDefense().toString()
+
+    fun getSpeedString(): String = getSpeed().toString()
 
     companion object {
         const val maxHp = 300
         const val maxAttack = 300
         const val maxDefense = 300
+        const val maxSpAttack = 300
+        const val maxSpDefense = 300
         const val maxSpeed = 300
-        const val maxExp = 1000
     }
 }

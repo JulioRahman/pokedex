@@ -3,9 +3,8 @@ package com.kencur.pokedex.di
 import android.app.Application
 import androidx.room.Room
 import com.kencur.pokedex.persistence.AppDatabase
-import com.kencur.pokedex.persistence.PokemonDao
 import com.kencur.pokedex.persistence.PokemonInfoDao
-import com.kencur.pokedex.persistence.TypeResponseConverter
+import com.kencur.pokedex.persistence.PokemonItemConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -30,19 +29,13 @@ object PersistenceModule {
     @Singleton
     fun provideAppDatabase(
         application: Application,
-        typeResponseConverter: TypeResponseConverter
+        pokemonItemConverter: PokemonItemConverter
     ): AppDatabase {
         return Room
             .databaseBuilder(application, AppDatabase::class.java, "pokedex.db")
             .fallbackToDestructiveMigration()
-            .addTypeConverter(typeResponseConverter)
+            .addTypeConverter(pokemonItemConverter)
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun providePokemonDao(appDatabase: AppDatabase): PokemonDao {
-        return appDatabase.pokemonDao()
     }
 
     @Provides
@@ -53,7 +46,7 @@ object PersistenceModule {
 
     @Provides
     @Singleton
-    fun provideTypeResponseConverter(moshi: Moshi): TypeResponseConverter {
-        return TypeResponseConverter(moshi)
+    fun providePokemonItemConverter(moshi: Moshi): PokemonItemConverter {
+        return PokemonItemConverter(moshi)
     }
 }

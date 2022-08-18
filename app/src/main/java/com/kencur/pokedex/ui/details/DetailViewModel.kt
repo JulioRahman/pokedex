@@ -3,38 +3,23 @@ package com.kencur.pokedex.ui.details
 import androidx.databinding.Bindable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.kencur.pokedex.model.PokemonInfo
-import com.kencur.pokedex.repository.DetailRepository
 import com.skydoves.bindables.BindingViewModel
-import com.skydoves.bindables.asBindingProperty
 import com.skydoves.bindables.bindingProperty
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
 class DetailViewModel @AssistedInject constructor(
-    detailRepository: DetailRepository,
-    @Assisted private val pokemonName: String
+    @Assisted private val pokemonInfoItem: PokemonInfo
 ) : BindingViewModel() {
-
-    @get:Bindable
-    var isLoading: Boolean by bindingProperty(true)
-        private set
 
     @get:Bindable
     var toastMessage: String? by bindingProperty(null)
         private set
 
-    private val pokemonInfoFlow: Flow<PokemonInfo?> = detailRepository.fetchPokemonInfo(
-        name = pokemonName,
-        onComplete = { isLoading = false },
-        onError = { toastMessage = it }
-    )
-
     @get:Bindable
-    val pokemonInfo: PokemonInfo? by pokemonInfoFlow.asBindingProperty(viewModelScope, null)
+    val pokemonInfo: PokemonInfo = pokemonInfoItem
 
     init {
         Timber.d("init DetailViewModel")
@@ -42,18 +27,18 @@ class DetailViewModel @AssistedInject constructor(
 
     @dagger.assisted.AssistedFactory
     interface AssistedFactory {
-        fun create(pokemonName: String): DetailViewModel
+        fun create(pokemonInfoItem: PokemonInfo): DetailViewModel
     }
 
     companion object {
         fun provideFactory(
             assistedFactory: AssistedFactory,
-            pokemonName: String
+            pokemonInfoItem: PokemonInfo
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
 
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return assistedFactory.create(pokemonName) as T
+                return assistedFactory.create(pokemonInfoItem) as T
             }
         }
     }

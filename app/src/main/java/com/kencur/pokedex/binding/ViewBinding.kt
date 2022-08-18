@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import com.google.android.material.card.MaterialCardView
-import com.kencur.pokedex.model.PokemonInfo
+import com.kencur.pokedex.model.TypeResponse
 import com.kencur.pokedex.utils.PokemonTypeUtils
 import com.kencur.pokedex.utils.SpacesItemDecoration
 import com.skydoves.androidribbon.RibbonRecyclerView
@@ -107,7 +107,7 @@ object ViewBinding {
 
     @JvmStatic
     @BindingAdapter("bindPokemonTypes")
-    fun bindPokemonTypes(recyclerView: RibbonRecyclerView, types: List<PokemonInfo.TypeResponse>?) {
+    fun bindPokemonTypes(recyclerView: RibbonRecyclerView, types: List<TypeResponse>?) {
         types.whatIfNotNullOrEmpty {
             recyclerView.clear()
             for (type in it) {

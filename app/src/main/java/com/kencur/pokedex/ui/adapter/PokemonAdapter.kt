@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.kencur.pokedex.R
 import com.kencur.pokedex.databinding.ItemPokemonBinding
-import com.kencur.pokedex.model.Pokemon
+import com.kencur.pokedex.model.PokemonInfo
 import com.kencur.pokedex.ui.details.DetailActivity
 import com.skydoves.bindables.BindingListAdapter
 import com.skydoves.bindables.binding
 
-class PokemonAdapter : BindingListAdapter<Pokemon, PokemonAdapter.PokemonViewHolder>(diffUtil) {
+class PokemonAdapter : BindingListAdapter<PokemonInfo, PokemonAdapter.PokemonViewHolder>(diffUtil) {
 
     private var onClickedAt = 0L
 
@@ -38,19 +38,19 @@ class PokemonAdapter : BindingListAdapter<Pokemon, PokemonAdapter.PokemonViewHol
             }
         }
 
-        fun bindPokemon(pokemon: Pokemon) {
-            binding.pokemon = pokemon
+        fun bindPokemon(pokemonInfo: PokemonInfo) {
+            binding.pokemonInfo = pokemonInfo
             binding.executePendingBindings()
         }
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<Pokemon>() {
+        private val diffUtil = object : DiffUtil.ItemCallback<PokemonInfo>() {
 
-            override fun areItemsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean =
+            override fun areItemsTheSame(oldItem: PokemonInfo, newItem: PokemonInfo): Boolean =
                 oldItem.name == newItem.name
 
-            override fun areContentsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean =
+            override fun areContentsTheSame(oldItem: PokemonInfo, newItem: PokemonInfo): Boolean =
                 oldItem == newItem
         }
     }

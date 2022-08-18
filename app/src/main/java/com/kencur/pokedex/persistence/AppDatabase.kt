@@ -6,10 +6,9 @@ import androidx.room.TypeConverters
 import com.kencur.pokedex.model.Pokemon
 import com.kencur.pokedex.model.PokemonInfo
 
-@Database(entities = [Pokemon::class, PokemonInfo::class], version = 1, exportSchema = true)
-@TypeConverters(value = [TypeResponseConverter::class])
+@Database(entities = [Pokemon::class, PokemonInfo::class], version = 3, exportSchema = true)
+@TypeConverters(value = [PokemonItemConverter::class])
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun pokemonDao(): PokemonDao
     abstract fun pokemonInfoDao(): PokemonInfoDao
 }

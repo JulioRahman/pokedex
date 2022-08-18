@@ -14,4 +14,10 @@ interface PokemonInfoDao {
 
     @Query("SELECT * FROM PokemonInfo WHERE name = :name_")
     suspend fun getPokemonInfo(name_: String): PokemonInfo?
+
+    @Query("SELECT * FROM PokemonInfo WHERE page = :page_")
+    suspend fun getPokemonInfoList(page_: Int): List<PokemonInfo>
+
+    @Query("SELECT * FROM PokemonInfo WHERE page <= :page_")
+    suspend fun getAllPokemonInfoList(page_: Int): List<PokemonInfo>
 }
