@@ -1,6 +1,6 @@
-# Lezat
+# Pokedex
 
-Recipe app
+an encyclopedia of Pokémon
 
 ## Screenshots
 
