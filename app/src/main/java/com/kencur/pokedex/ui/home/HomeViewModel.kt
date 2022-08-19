@@ -1,4 +1,4 @@
-package com.kencur.pokedex.ui.main
+package com.kencur.pokedex.ui.home
 
 import androidx.annotation.MainThread
 import androidx.databinding.Bindable
@@ -15,7 +15,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val pokedexRepository: PokedexRepository
 ) : BindingViewModel() {
 

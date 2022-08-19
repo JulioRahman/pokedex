@@ -1,20 +1,18 @@
 package com.kencur.pokedex.ui.adapter
 
-import android.os.SystemClock
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.kencur.pokedex.R
 import com.kencur.pokedex.databinding.ItemPokemonBinding
 import com.kencur.pokedex.model.PokemonInfo
-import com.kencur.pokedex.ui.details.DetailActivity
+import com.kencur.pokedex.ui.home.HomeFragmentDirections
 import com.skydoves.bindables.BindingListAdapter
 import com.skydoves.bindables.binding
 
 class PokemonAdapter : BindingListAdapter<PokemonInfo, PokemonAdapter.PokemonViewHolder>(diffUtil) {
-
-    private var onClickedAt = 0L
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder =
         parent.binding<ItemPokemonBinding>(R.layout.item_pokemon).let(::PokemonViewHolder)
@@ -27,14 +25,12 @@ class PokemonAdapter : BindingListAdapter<PokemonInfo, PokemonAdapter.PokemonVie
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener {
+            binding.root.setOnClickListener { view ->
                 val position = bindingAdapterPosition.takeIf { it != NO_POSITION }
                     ?: return@setOnClickListener
-                val currentClickedAt = SystemClock.elapsedRealtime()
-                if (currentClickedAt - onClickedAt > binding.transformationLayout.duration) {
-                    DetailActivity.startActivity(binding.transformationLayout, getItem(position))
-                    onClickedAt = currentClickedAt
-                }
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToInfoFragment(getItem(position))
+                view.findNavController().navigate(action)
             }
         }
 

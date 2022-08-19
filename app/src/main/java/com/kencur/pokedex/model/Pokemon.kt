@@ -12,17 +12,9 @@ import kotlinx.parcelize.Parcelize
 @JsonClass(generateAdapter = true)
 data class Pokemon(
 
-    var page: Int = 0,
-
     @field:Json(name = "name") @PrimaryKey
     val name: String,
 
     @field:Json(name = "url")
     val url: String
-) : Parcelable {
-
-    fun getImageUrl(): String {
-        val index = url.split("/".toRegex()).dropLast(1).last()
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/$index.png"
-    }
-}
+) : Parcelable

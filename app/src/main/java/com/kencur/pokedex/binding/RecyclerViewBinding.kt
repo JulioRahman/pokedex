@@ -2,7 +2,7 @@ package com.kencur.pokedex.binding
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kencur.pokedex.ui.main.MainViewModel
+import com.kencur.pokedex.ui.home.HomeViewModel
 import com.skydoves.baserecyclerviewadapter.RecyclerViewPaginator
 import com.skydoves.bindables.BindingListAdapter
 import com.skydoves.whatif.whatIfNotNullAs
@@ -27,7 +27,7 @@ object RecyclerViewBinding {
 
     @JvmStatic
     @BindingAdapter("paginationPokemonList")
-    fun paginationPokemonList(view: RecyclerView, viewModel: MainViewModel) {
+    fun paginationPokemonList(view: RecyclerView, viewModel: HomeViewModel) {
         RecyclerViewPaginator(
             recyclerView = view,
             isLoading = { viewModel.isLoading },

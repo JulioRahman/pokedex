@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.kencur.pokedex.model.Pokemon
 import com.kencur.pokedex.model.PokemonInfo
 
-@Database(entities = [Pokemon::class, PokemonInfo::class], version = 3, exportSchema = true)
+@Database(entities = [Pokemon::class, PokemonInfo::class], version = 4, exportSchema = true)
 @TypeConverters(value = [PokemonItemConverter::class])
 abstract class AppDatabase : RoomDatabase() {
 
