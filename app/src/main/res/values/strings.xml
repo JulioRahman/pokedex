@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Pokédex</string>
-    <string name="home">Home</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_favorite">Favorite</string>
     <string name="weight">Weight</string>
     <string name="height">Height</string>
     <string name="base_stats">Base Stats</string>
@@ -9,4 +10,6 @@
     <string name="def">DEF</string>
     <string name="spd">SPD</string>
     <string name="exp">EXP</string>
+    <string name="favorite">favorite</string>
+    <string name="not_favorite">not_favorite</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.kencur.pokedex.ui.home
+package com.kencur.pokedex.ui.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kencur.pokedex.R
-import com.kencur.pokedex.databinding.FragmentHomeBinding
+import com.kencur.pokedex.databinding.FragmentFavoritesBinding
 import com.kencur.pokedex.ui.adapter.PokemonAdapter
 import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>(R.layout.fragment_favorites) {
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: FavoritesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,10 +25,15 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         super.onCreateView(inflater, container, savedInstanceState)
         return binding {
             adapter = PokemonAdapter(onClick = {
-                val action = HomeFragmentDirections.actionHomeFragmentToInfoFragment(it)
+                val action = FavoritesFragmentDirections.actionFavoritesFragmentToInfoFragment(it)
                 findNavController().navigate(action)
             })
             vm = viewModel
         }.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFavoritePokemonList()
     }
 }

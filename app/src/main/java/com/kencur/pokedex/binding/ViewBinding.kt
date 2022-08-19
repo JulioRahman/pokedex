@@ -9,11 +9,13 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import com.google.android.material.card.MaterialCardView
+import com.kencur.pokedex.R
 import com.kencur.pokedex.model.TypeResponse
 import com.kencur.pokedex.utils.PokemonTypeUtils
 import com.kencur.pokedex.utils.SpacesItemDecoration
@@ -116,8 +118,8 @@ object ViewBinding {
                         ribbonView(context) {
                             setText(type.type.name)
                             setTextColor(Color.WHITE)
-                            setPaddingLeft(84f)
-                            setPaddingRight(84f)
+                            setPaddingLeft(16f)
+                            setPaddingRight(16f)
                             setPaddingTop(2f)
                             setPaddingBottom(10f)
                             setTextSize(16f)
@@ -157,5 +159,31 @@ object ViewBinding {
         if (value != null) {
             progressView.max = value.toFloat()
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("isFavorite")
+    fun bindIsFavorite(view: AppCompatImageView, isFavorite: Boolean) {
+        view.setImageDrawable(
+            if (isFavorite) {
+                ResourcesCompat.getDrawable(
+                    view.resources,
+                    R.drawable.ic_favorite,
+                    view.context.theme
+                )
+            } else {
+                ResourcesCompat.getDrawable(
+                    view.resources,
+                    R.drawable.ic_favorite_border,
+                    view.context.theme
+                )
+            }
+        )
+    }
+
+    @JvmStatic
+    @BindingAdapter("clickListener")
+    fun bindClickListener(view: View, clickListener: View.OnClickListener?) {
+        view.setOnClickListener(clickListener)
     }
 }

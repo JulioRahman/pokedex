@@ -1,18 +1,18 @@
 package com.kencur.pokedex.ui.adapter
 
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.kencur.pokedex.R
 import com.kencur.pokedex.databinding.ItemPokemonBinding
 import com.kencur.pokedex.model.PokemonInfo
-import com.kencur.pokedex.ui.home.HomeFragmentDirections
 import com.skydoves.bindables.BindingListAdapter
 import com.skydoves.bindables.binding
 
-class PokemonAdapter : BindingListAdapter<PokemonInfo, PokemonAdapter.PokemonViewHolder>(diffUtil) {
+class PokemonAdapter(
+    private val onClick: (PokemonInfo) -> Unit
+) : BindingListAdapter<PokemonInfo, PokemonAdapter.PokemonViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder =
         parent.binding<ItemPokemonBinding>(R.layout.item_pokemon).let(::PokemonViewHolder)
@@ -25,12 +25,10 @@ class PokemonAdapter : BindingListAdapter<PokemonInfo, PokemonAdapter.PokemonVie
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener { view ->
+            binding.root.setOnClickListener {
                 val position = bindingAdapterPosition.takeIf { it != NO_POSITION }
                     ?: return@setOnClickListener
-                val action =
-                    HomeFragmentDirections.actionHomeFragmentToInfoFragment(getItem(position))
-                view.findNavController().navigate(action)
+                onClick(getItem(position))
             }
         }
 

@@ -36,7 +36,9 @@ data class PokemonInfo(
     val stats: List<Stat>,
 
     @field:Json(name = "sprites")
-    val sprites: Sprites
+    val sprites: Sprites,
+
+    var isFavorite: Boolean = false
 ) : Parcelable {
 
     fun getIdString(): String = String.format("#%03d", id)

@@ -1,6 +1,7 @@
 package com.kencur.pokedex.repository
 
 import androidx.annotation.WorkerThread
+import com.kencur.pokedex.model.PokemonInfo
 import com.kencur.pokedex.network.PokedexClient
 import com.kencur.pokedex.persistence.PokemonInfoDao
 import com.skydoves.sandwich.message
@@ -49,5 +50,24 @@ class PokedexRepository @Inject constructor(
         } else {
             emit(pokemonInfoDao.getAllPokemonInfoList(page).sortedBy { it.id })
         }
+    }.onStart { onStart() }.onCompletion { onComplete() }.flowOn(ioDispatcher)
+
+    @WorkerThread
+    fun isFavoritePokemon(id: Int) = pokemonInfoDao.isFavoritePokemon(id)
+
+    @WorkerThread
+    suspend fun addFavoritePokemon(pokemonInfo: PokemonInfo) =
+        pokemonInfoDao.addFavoritePokemon(pokemonInfo)
+
+    @WorkerThread
+    suspend fun removeFavoritePokemon(pokemonInfo: PokemonInfo) =
+        pokemonInfoDao.removeFavoritePokemon(pokemonInfo)
+
+    @WorkerThread
+    fun fetchFavoritePokemonList(
+        onStart: () -> Unit,
+        onComplete: () -> Unit
+    ) = flow {
+        emit(pokemonInfoDao.getFavoritePokemonList())
     }.onStart { onStart() }.onCompletion { onComplete() }.flowOn(ioDispatcher)
 }

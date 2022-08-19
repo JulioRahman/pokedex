@@ -9,11 +9,20 @@ import com.kencur.pokedex.R
 import com.kencur.pokedex.databinding.FragmentInfoBinding
 import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class InfoFragment : BindingFragment<FragmentInfoBinding>(R.layout.fragment_info) {
 
-    private val viewModel: InfoViewModel by viewModels()
+    @set:Inject
+    internal lateinit var viewModelFactory: InfoViewModel.Factory
+
+    private val viewModel: InfoViewModel by viewModels {
+        InfoViewModel.provideFactory(
+            viewModelFactory,
+            InfoFragmentArgs.fromBundle(requireArguments()).pokemonInfo
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

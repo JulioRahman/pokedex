@@ -33,6 +33,7 @@ object PersistenceModule {
     ): AppDatabase {
         return Room
             .databaseBuilder(application, AppDatabase::class.java, "pokedex.db")
+            .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .addTypeConverter(pokemonItemConverter)
             .build()

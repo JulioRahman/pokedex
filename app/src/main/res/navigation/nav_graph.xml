@@ -17,6 +17,17 @@
     </fragment>
 
     <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.kencur.pokedex.ui.favorites.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites">
+
+        <action
+            android:id="@+id/action_favoritesFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/infoFragment"
         android:name="com.kencur.pokedex.ui.info.InfoFragment"
         android:label="fragment_info"
