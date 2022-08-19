@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
+import java.util.*
 
 @Entity
 @Parcelize
@@ -42,6 +43,11 @@ data class PokemonInfo(
 ) : Parcelable {
 
     fun getIdString(): String = String.format("#%03d", id)
+
+    fun getNameString(): String =
+        name.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+        }
 
     fun getHeightString(): String = String.format("%d cm", height.times(10))
 

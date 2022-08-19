@@ -12,6 +12,10 @@
         <variable
             name="vm"
             type="com.kencur.pokedex.ui.info.InfoViewModel" />
+
+        <variable
+            name="onBackPressed"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -33,9 +37,9 @@
                 android:paddingTop="12dp"
                 android:paddingEnd="6dp"
                 android:translationZ="100dp"
+                app:clickListener="@{onBackPressed}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/header"
-                app:onBackPressed="@{true}"
                 app:srcCompat="@drawable/ic_arrow" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -71,9 +75,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="36dp"
-                android:text="@{pokemonInfo.name}"
+                android:text="@{pokemonInfo.nameString}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="36sp"
                 android:textStyle="bold"
                 android:translationZ="100dp"
@@ -164,7 +168,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/weight"
-                android:textColor="@color/white_56"
                 app:layout_constraintEnd_toStartOf="@id/height"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/weight"
@@ -175,7 +178,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/height"
-                android:textColor="@color/white_56"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/weight"
                 app:layout_constraintTop_toBottomOf="@id/height" />
@@ -187,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="@string/base_stats"
-                android:textColor="@color/white_93"
+                android:textColor="@color/black"
                 android:textSize="21sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -200,27 +202,34 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/hp"
-                android:textColor="@color/white_70"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/stats_title" />
 
+            <TextView
+                android:id="@+id/hpString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:text="@{pokemonInfo.hpString}"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/hp"
+                app:layout_constraintStart_toEndOf="@id/hp"
+                app:layout_constraintTop_toTopOf="@id/hp"
+                tools:text="80" />
+
             <com.skydoves.progressview.ProgressView
                 android:id="@+id/progress_hp"
                 android:layout_width="0dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="32dp"
+                android:layout_height="4dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="32dp"
                 app:layout_constraintBottom_toBottomOf="@id/hp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/hp"
+                app:layout_constraintStart_toEndOf="@id/hpString"
                 app:layout_constraintTop_toTopOf="@id/hp"
                 app:progressView_colorBackground="@color/white"
                 app:progressView_colorProgress="@color/colorPrimary"
-                app:progressView_labelColorInner="@color/white"
-                app:progressView_labelColorOuter="@color/black"
-                app:progressView_labelSize="12sp"
-                app:progressView_labelText="@{pokemonInfo.hpString}"
                 app:progressView_max="@{pokemonInfo.maxHp}"
                 app:progressView_progress="@{pokemonInfo.hp}"
                 app:progressView_radius="12dp" />
@@ -232,25 +241,32 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="12dp"
                 android:text="@string/atk"
-                android:textColor="@color/white_70"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/hp" />
 
+            <TextView
+                android:id="@+id/attackString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:text="@{pokemonInfo.attackString}"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/attack"
+                app:layout_constraintStart_toEndOf="@id/hp"
+                app:layout_constraintTop_toTopOf="@id/attack"
+                tools:text="80" />
+
             <com.skydoves.progressview.ProgressView
                 android:layout_width="0dp"
-                android:layout_height="18dp"
+                android:layout_height="4dp"
                 android:layout_marginEnd="32dp"
                 app:layout_constraintBottom_toBottomOf="@id/attack"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/progress_hp"
                 app:layout_constraintTop_toTopOf="@id/attack"
                 app:progressView_colorBackground="@color/white"
-                app:progressView_colorProgress="@color/md_orange_100"
-                app:progressView_labelColorInner="@color/white"
-                app:progressView_labelColorOuter="@color/black"
-                app:progressView_labelSize="12sp"
-                app:progressView_labelText="@{pokemonInfo.attackString}"
+                app:progressView_colorProgress="@color/colorPrimary"
                 app:progressView_max="@{pokemonInfo.maxAttack}"
                 app:progressView_progress="@{pokemonInfo.attack}"
                 app:progressView_radius="12dp" />
@@ -262,25 +278,32 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="12dp"
                 android:text="@string/def"
-                android:textColor="@color/white_70"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/attack" />
 
+            <TextView
+                android:id="@+id/defenseString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:text="@{pokemonInfo.defenseString}"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/defense"
+                app:layout_constraintStart_toEndOf="@id/hp"
+                app:layout_constraintTop_toTopOf="@id/defense"
+                tools:text="80" />
+
             <com.skydoves.progressview.ProgressView
                 android:layout_width="0dp"
-                android:layout_height="18dp"
+                android:layout_height="4dp"
                 android:layout_marginEnd="32dp"
                 app:layout_constraintBottom_toBottomOf="@id/defense"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/progress_hp"
                 app:layout_constraintTop_toTopOf="@id/defense"
                 app:progressView_colorBackground="@color/white"
-                app:progressView_colorProgress="@color/md_blue_200"
-                app:progressView_labelColorInner="@color/white"
-                app:progressView_labelColorOuter="@color/black"
-                app:progressView_labelSize="12sp"
-                app:progressView_labelText="@{pokemonInfo.defenseString}"
+                app:progressView_colorProgress="@color/colorPrimary"
                 app:progressView_max="@{pokemonInfo.maxDefense}"
                 app:progressView_progress="@{pokemonInfo.defense}"
                 app:progressView_radius="12dp" />
@@ -292,25 +315,32 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="12dp"
                 android:text="@string/spd"
-                android:textColor="@color/white_70"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/defense" />
 
+            <TextView
+                android:id="@+id/speedString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:text="@{pokemonInfo.speedString}"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/speed"
+                app:layout_constraintStart_toEndOf="@id/hp"
+                app:layout_constraintTop_toTopOf="@id/speed"
+                tools:text="80" />
+
             <com.skydoves.progressview.ProgressView
                 android:layout_width="0dp"
-                android:layout_height="18dp"
+                android:layout_height="4dp"
                 android:layout_marginEnd="32dp"
                 app:layout_constraintBottom_toBottomOf="@id/speed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/progress_hp"
                 app:layout_constraintTop_toTopOf="@id/speed"
                 app:progressView_colorBackground="@color/white"
-                app:progressView_colorProgress="@color/flying"
-                app:progressView_labelColorInner="@color/white"
-                app:progressView_labelColorOuter="@color/black"
-                app:progressView_labelSize="12sp"
-                app:progressView_labelText="@{pokemonInfo.speedString}"
+                app:progressView_colorProgress="@color/colorPrimary"
                 app:progressView_max="@{pokemonInfo.maxSpeed}"
                 app:progressView_progress="@{pokemonInfo.speed}"
                 app:progressView_radius="12dp" />

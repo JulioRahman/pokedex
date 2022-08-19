@@ -1,16 +1,16 @@
 package com.kencur.pokedex.binding
 
 import android.graphics.Color
-import android.graphics.Typeface
+import android.graphics.Rect
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
@@ -26,6 +26,7 @@ import com.skydoves.rainbow.Rainbow
 import com.skydoves.rainbow.RainbowOrientation
 import com.skydoves.rainbow.color
 import com.skydoves.whatif.whatIfNotNullOrEmpty
+import java.util.*
 
 object ViewBinding {
 
@@ -97,17 +98,6 @@ object ViewBinding {
     }
 
     @JvmStatic
-    @BindingAdapter("onBackPressed")
-    fun bindOnBackPressed(view: View, onBackPress: Boolean) {
-        val context = view.context
-        if (onBackPress && context is OnBackPressedDispatcherOwner) {
-            view.setOnClickListener {
-                context.onBackPressedDispatcher.onBackPressed()
-            }
-        }
-    }
-
-    @JvmStatic
     @BindingAdapter("bindPokemonTypes")
     fun bindPokemonTypes(recyclerView: RibbonRecyclerView, types: List<TypeResponse>?) {
         types.whatIfNotNullOrEmpty {
@@ -116,15 +106,19 @@ object ViewBinding {
                 with(recyclerView) {
                     addRibbon(
                         ribbonView(context) {
-                            setText(type.type.name)
+                            setText(type.type.name.replaceFirstChar { c ->
+                                if (c.isLowerCase())
+                                    c.titlecase(Locale.getDefault())
+                                else
+                                    c.toString()
+                            })
                             setTextColor(Color.WHITE)
-                            setPaddingLeft(16f)
-                            setPaddingRight(16f)
-                            setPaddingTop(2f)
-                            setPaddingBottom(10f)
+                            setPaddingLeft(24f)
+                            setPaddingRight(24f)
+                            setPaddingTop(8f)
+                            setPaddingBottom(8f)
                             setTextSize(16f)
                             setRibbonRadius(120f)
-                            setTextStyle(Typeface.BOLD)
                             setRibbonBackgroundColorResource(
                                 PokemonTypeUtils.getTypeColor(type.type.name)
                             )
@@ -140,9 +134,50 @@ object ViewBinding {
     }
 
     @JvmStatic
-    @BindingAdapter("progressView_labelText")
-    fun bindProgressViewLabelText(progressView: ProgressView, text: String?) {
-        progressView.labelText = text
+    @BindingAdapter("bindPokemonTypesForCard")
+    fun bindPokemonTypesForCard(recyclerView: RibbonRecyclerView, types: List<TypeResponse>?) {
+        types.whatIfNotNullOrEmpty {
+            recyclerView.clear()
+            for (type in it) {
+                with(recyclerView) {
+                    addRibbon(
+                        ribbonView(context) {
+                            setText(type.type.name.replaceFirstChar { c ->
+                                if (c.isLowerCase())
+                                    c.titlecase(Locale.getDefault())
+                                else
+                                    c.toString()
+                            })
+                            setTextColor(Color.WHITE)
+                            setPaddingLeft(16f)
+                            setPaddingRight(16f)
+                            setPaddingTop(8f)
+                            setPaddingBottom(8f)
+                            setTextSize(12f)
+                            setRibbonRadius(120f)
+                            setRibbonBackgroundColorResource(
+                                PokemonTypeUtils.getTypeColor(type.type.name)
+                            )
+                        }.apply {
+                            maxLines = 2
+                            gravity = Gravity.START
+                        }
+                    )
+                    addItemDecoration(object : RecyclerView.ItemDecoration() {
+                        override fun getItemOffsets(
+                            outRect: Rect,
+                            view: View,
+                            parent: RecyclerView,
+                            state: RecyclerView.State
+                        ) {
+                            if (parent.getChildAdapterPosition(view) != 0) {
+                                outRect.top = 8
+                            }
+                        }
+                    })
+                }
+            }
+        }
     }
 
     @JvmStatic

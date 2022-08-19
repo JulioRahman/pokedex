@@ -33,6 +33,7 @@ class InfoFragment : BindingFragment<FragmentInfoBinding>(R.layout.fragment_info
         return binding {
             pokemonInfo = InfoFragmentArgs.fromBundle(requireArguments()).pokemonInfo
             vm = viewModel
+            onBackPressed = View.OnClickListener { requireActivity().onBackPressed() }
         }.root
     }
 }

@@ -6,10 +6,12 @@
     <string name="height">Height</string>
     <string name="base_stats">Base Stats</string>
     <string name="hp">HP</string>
-    <string name="atk">ATK</string>
-    <string name="def">DEF</string>
-    <string name="spd">SPD</string>
-    <string name="exp">EXP</string>
+    <string name="atk">Attack</string>
+    <string name="def">Defense</string>
+    <string name="sp_atk">Sp. Attack</string>
+    <string name="sp_def">Sp. Defense</string>
+    <string name="spd">Speed</string>
+    <string name="empty">Empty Data</string>
     <string name="favorite">favorite</string>
     <string name="not_favorite">not_favorite</string>
 </resources>
