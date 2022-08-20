@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="pokemonInfo"
-            type="com.kencur.pokedex.model.PokemonInfo" />
+            name="pokemon"
+            type="com.kencur.pokedex.model.Pokemon" />
 
     </data>
 
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:maxLines="1"
-                android:text="@{pokemonInfo.nameString}"
+                android:text="@{pokemon.nameString}"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                app:bindPokemonTypesForCard="@{pokemonInfo.types}"
+                app:bindPokemonTypesForCard="@{pokemon.types}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/name"
@@ -64,7 +64,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/name"
                 app:paletteCard="@{cardView}"
-                app:paletteImage="@{pokemonInfo.sprites.other.home.frontDefault}" />
+                app:paletteImage="@{pokemon.sprites.other.home.frontDefault}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -3,7 +3,7 @@ package com.kencur.pokedex.ui.home
 import androidx.annotation.MainThread
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
-import com.kencur.pokedex.model.PokemonInfo
+import com.kencur.pokedex.model.Pokemon
 import com.kencur.pokedex.repository.PokedexRepository
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.asBindingProperty
@@ -28,8 +28,8 @@ class HomeViewModel @Inject constructor(
         private set
 
     private val pokemonFetchingIndex: MutableStateFlow<Int> = MutableStateFlow(0)
-    private val pokemonInfoListFlow = pokemonFetchingIndex.flatMapLatest { page ->
-        pokedexRepository.fetchPokemonInfoList(
+    private val pokemonListFlow = pokemonFetchingIndex.flatMapLatest { page ->
+        pokedexRepository.fetchPokemonList(
             page = page,
             onStart = { isLoading = true },
             onComplete = { isLoading = false },
@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
     }
 
     @get:Bindable
-    val pokemonInfoList: List<PokemonInfo> by pokemonInfoListFlow.asBindingProperty(
+    val pokemonList: List<Pokemon> by pokemonListFlow.asBindingProperty(
         viewModelScope,
         emptyList()
     )

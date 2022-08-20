@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.kencur.pokedex.R
 import com.kencur.pokedex.databinding.ItemPokemonBinding
-import com.kencur.pokedex.model.PokemonInfo
+import com.kencur.pokedex.model.Pokemon
 import com.skydoves.bindables.BindingListAdapter
 import com.skydoves.bindables.binding
 
 class PokemonAdapter(
-    private val onClick: (PokemonInfo) -> Unit
-) : BindingListAdapter<PokemonInfo, PokemonAdapter.PokemonViewHolder>(diffUtil) {
+    private val onClick: (Pokemon) -> Unit
+) : BindingListAdapter<Pokemon, PokemonAdapter.PokemonViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder =
         parent.binding<ItemPokemonBinding>(R.layout.item_pokemon).let(::PokemonViewHolder)
@@ -32,19 +32,19 @@ class PokemonAdapter(
             }
         }
 
-        fun bindPokemon(pokemonInfo: PokemonInfo) {
-            binding.pokemonInfo = pokemonInfo
+        fun bindPokemon(pokemon: Pokemon) {
+            binding.pokemon = pokemon
             binding.executePendingBindings()
         }
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<PokemonInfo>() {
+        private val diffUtil = object : DiffUtil.ItemCallback<Pokemon>() {
 
-            override fun areItemsTheSame(oldItem: PokemonInfo, newItem: PokemonInfo): Boolean =
+            override fun areItemsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean =
                 oldItem.name == newItem.name
 
-            override fun areContentsTheSame(oldItem: PokemonInfo, newItem: PokemonInfo): Boolean =
+            override fun areContentsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean =
                 oldItem == newItem
         }
     }

@@ -1,7 +1,7 @@
 package com.kencur.pokedex.di
 
 import com.kencur.pokedex.network.PokedexClient
-import com.kencur.pokedex.persistence.PokemonInfoDao
+import com.kencur.pokedex.persistence.PokemonDao
 import com.kencur.pokedex.repository.PokedexRepository
 import dagger.Module
 import dagger.Provides
@@ -18,9 +18,9 @@ object RepositoryModule {
     @ViewModelScoped
     fun providePokedexRepository(
         pokedexClient: PokedexClient,
-        pokemonInfoDao: PokemonInfoDao,
+        pokemonDao: PokemonDao,
         coroutineDispatcher: CoroutineDispatcher
     ): PokedexRepository {
-        return PokedexRepository(pokedexClient, pokemonInfoDao, coroutineDispatcher)
+        return PokedexRepository(pokedexClient, pokemonDao, coroutineDispatcher)
     }
 }

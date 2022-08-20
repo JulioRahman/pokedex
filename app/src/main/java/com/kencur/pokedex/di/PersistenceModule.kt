@@ -3,7 +3,7 @@ package com.kencur.pokedex.di
 import android.app.Application
 import androidx.room.Room
 import com.kencur.pokedex.persistence.AppDatabase
-import com.kencur.pokedex.persistence.PokemonInfoDao
+import com.kencur.pokedex.persistence.PokemonDao
 import com.kencur.pokedex.persistence.PokemonItemConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -41,8 +41,8 @@ object PersistenceModule {
 
     @Provides
     @Singleton
-    fun providePokemonInfoDao(appDatabase: AppDatabase): PokemonInfoDao {
-        return appDatabase.pokemonInfoDao()
+    fun providePokemonDao(appDatabase: AppDatabase): PokemonDao {
+        return appDatabase.pokemonDao()
     }
 
     @Provides

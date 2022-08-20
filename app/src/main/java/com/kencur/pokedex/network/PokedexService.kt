@@ -1,7 +1,7 @@
 package com.kencur.pokedex.network
 
-import com.kencur.pokedex.model.PokemonInfo
-import com.kencur.pokedex.model.PokemonResponse
+import com.kencur.pokedex.model.Pagination
+import com.kencur.pokedex.model.Pokemon
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,10 +13,10 @@ interface PokedexService {
     suspend fun fetchPokemonList(
         @Query("limit") limit: Int = 10,
         @Query("offset") offset: Int = 0
-    ): ApiResponse<PokemonResponse>
+    ): ApiResponse<Pagination>
 
     @GET("pokemon/{name}")
-    suspend fun fetchPokemonInfo(
+    suspend fun fetchPokemon(
         @Path("name") name: String
-    ): ApiResponse<PokemonInfo>
+    ): ApiResponse<Pokemon>
 }

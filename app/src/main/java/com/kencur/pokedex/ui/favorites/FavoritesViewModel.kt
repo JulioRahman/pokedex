@@ -2,7 +2,7 @@ package com.kencur.pokedex.ui.favorites
 
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
-import com.kencur.pokedex.model.PokemonInfo
+import com.kencur.pokedex.model.Pokemon
 import com.kencur.pokedex.repository.PokedexRepository
 import com.skydoves.bindables.BR
 import com.skydoves.bindables.BindingViewModel
@@ -19,11 +19,11 @@ class FavoritesViewModel @Inject constructor(
     private val pokedexRepository: PokedexRepository
 ) : BindingViewModel() {
 
-    private val _favoritePokemons: MutableStateFlow<List<PokemonInfo>> =
+    private val _favoritePokemons: MutableStateFlow<List<Pokemon>> =
         MutableStateFlow(emptyList())
 
     @get:Bindable
-    val favoritePokemons: StateFlow<List<PokemonInfo>> = _favoritePokemons
+    val favoritePokemons: StateFlow<List<Pokemon>> = _favoritePokemons
 
     @get:Bindable
     var isLoading: Boolean by bindingProperty(false)

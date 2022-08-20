@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PokemonResponse(
+data class Pagination(
 
     @field:Json(name = "count")
     val count: Int,
@@ -16,5 +16,5 @@ data class PokemonResponse(
     val previous: String?,
 
     @field:Json(name = "results")
-    val results: List<Pokemon>
+    val results: List<Result>
 )

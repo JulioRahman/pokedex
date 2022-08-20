@@ -20,7 +20,7 @@ class InfoFragment : BindingFragment<FragmentInfoBinding>(R.layout.fragment_info
     private val viewModel: InfoViewModel by viewModels {
         InfoViewModel.provideFactory(
             viewModelFactory,
-            InfoFragmentArgs.fromBundle(requireArguments()).pokemonInfo
+            InfoFragmentArgs.fromBundle(requireArguments()).pokemon
         )
     }
 
@@ -31,7 +31,7 @@ class InfoFragment : BindingFragment<FragmentInfoBinding>(R.layout.fragment_info
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         return binding {
-            pokemonInfo = InfoFragmentArgs.fromBundle(requireArguments()).pokemonInfo
+            pokemon = InfoFragmentArgs.fromBundle(requireArguments()).pokemon
             vm = viewModel
             onBackPressed = View.OnClickListener { requireActivity().onBackPressed() }
         }.root

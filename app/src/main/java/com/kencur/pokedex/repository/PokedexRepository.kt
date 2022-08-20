@@ -1,9 +1,9 @@
 package com.kencur.pokedex.repository
 
 import androidx.annotation.WorkerThread
-import com.kencur.pokedex.model.PokemonInfo
+import com.kencur.pokedex.model.Pokemon
 import com.kencur.pokedex.network.PokedexClient
-import com.kencur.pokedex.persistence.PokemonInfoDao
+import com.kencur.pokedex.persistence.PokemonDao
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onFailure
 import com.skydoves.sandwich.suspendOnSuccess
@@ -16,58 +16,57 @@ import javax.inject.Inject
 
 class PokedexRepository @Inject constructor(
     private val pokedexClient: PokedexClient,
-    private val pokemonInfoDao: PokemonInfoDao,
+    private val pokemonDao: PokemonDao,
     private val ioDispatcher: CoroutineDispatcher
 ) : Repository {
 
     @WorkerThread
-    fun fetchPokemonInfoList(
+    fun fetchPokemonList(
         page: Int,
         onStart: () -> Unit,
         onComplete: () -> Unit,
         onError: (String?) -> Unit
     ) = flow {
-        val pokemonInfoList = pokemonInfoDao.getPokemonInfoList(page)
-        if (pokemonInfoList.isEmpty()) {
-            val pokemonResponse = pokedexClient.fetchPokemonList(page = page)
-            pokemonResponse.suspendOnSuccess {
-                data.results.forEach { pokemon ->
-                    val pokemonInfo = pokemonInfoDao.getPokemonInfo(pokemon.name)
-                    if (pokemonInfo == null) {
-                        val pokemonInfoResponse =
-                            pokedexClient.fetchPokemonInfo(name = pokemon.name)
-                        pokemonInfoResponse.suspendOnSuccess {
-                            pokemonInfoDao.insertPokemonInfo(data.copy(page = page))
+        val pokemonList = pokemonDao.getPokemonList(page)
+        if (pokemonList.isEmpty()) {
+            val pokemonListResponse = pokedexClient.fetchPokemonList(page = page)
+            pokemonListResponse.suspendOnSuccess {
+                data.results.forEach { pokemonResult ->
+                    val pokemon = pokemonDao.getPokemon(pokemonResult.name)
+                    if (pokemon == null) {
+                        val pokemonResponse = pokedexClient.fetchPokemon(name = pokemonResult.name)
+                        pokemonResponse.suspendOnSuccess {
+                            pokemonDao.insertPokemon(data.copy(page = page))
                         }.onFailure {
                             onError(message())
                         }
                     }
                 }
-                emit(pokemonInfoDao.getAllPokemonInfoList(page).sortedBy { it.id })
+                emit(pokemonDao.getAllPokemonList(page).sortedBy { it.id })
             }.onFailure {
                 onError(message())
             }
         } else {
-            emit(pokemonInfoDao.getAllPokemonInfoList(page).sortedBy { it.id })
+            emit(pokemonDao.getAllPokemonList(page).sortedBy { it.id })
         }
     }.onStart { onStart() }.onCompletion { onComplete() }.flowOn(ioDispatcher)
 
     @WorkerThread
-    fun isFavoritePokemon(id: Int) = pokemonInfoDao.isFavoritePokemon(id)
+    fun isFavoritePokemon(id: Int) = pokemonDao.isFavoritePokemon(id)
 
     @WorkerThread
-    suspend fun addFavoritePokemon(pokemonInfo: PokemonInfo) =
-        pokemonInfoDao.addFavoritePokemon(pokemonInfo)
+    suspend fun addFavoritePokemon(pokemon: Pokemon) =
+        pokemonDao.addFavoritePokemon(pokemon)
 
     @WorkerThread
-    suspend fun removeFavoritePokemon(pokemonInfo: PokemonInfo) =
-        pokemonInfoDao.removeFavoritePokemon(pokemonInfo)
+    suspend fun removeFavoritePokemon(pokemon: Pokemon) =
+        pokemonDao.removeFavoritePokemon(pokemon)
 
     @WorkerThread
     fun fetchFavoritePokemonList(
         onStart: () -> Unit,
         onComplete: () -> Unit
     ) = flow {
-        emit(pokemonInfoDao.getFavoritePokemonList())
+        emit(pokemonDao.getFavoritePokemonList())
     }.onStart { onStart() }.onCompletion { onComplete() }.flowOn(ioDispatcher)
 }

@@ -5,7 +5,7 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kencur.pokedex.model.PokemonInfo
+import com.kencur.pokedex.model.Pokemon
 import com.kencur.pokedex.repository.PokedexRepository
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.bindingProperty
@@ -17,7 +17,7 @@ import timber.log.Timber
 
 class InfoViewModel @AssistedInject constructor(
     private val pokedexRepository: PokedexRepository,
-    @Assisted private val pokemonInfo: PokemonInfo
+    @Assisted private val pokemon: Pokemon
 ) : BindingViewModel() {
 
     @get:Bindable
@@ -30,7 +30,7 @@ class InfoViewModel @AssistedInject constructor(
 
     @Bindable
     fun isFavorite(): Boolean {
-        return pokedexRepository.isFavoritePokemon(pokemonInfo.id)
+        return pokedexRepository.isFavoritePokemon(pokemon.id)
     }
 
     init {
@@ -41,11 +41,11 @@ class InfoViewModel @AssistedInject constructor(
     val onFavoriteClick = View.OnClickListener {
         if (isFavorite()) {
             viewModelScope.launch {
-                pokedexRepository.removeFavoritePokemon(pokemonInfo.copy(isFavorite = false))
+                pokedexRepository.removeFavoritePokemon(pokemon.copy(isFavorite = false))
             }
         } else {
             viewModelScope.launch {
-                pokedexRepository.addFavoritePokemon(pokemonInfo.copy(isFavorite = true))
+                pokedexRepository.addFavoritePokemon(pokemon.copy(isFavorite = true))
             }
         }
         notifyPropertyChanged(::isFavorite)
@@ -53,18 +53,18 @@ class InfoViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(pokemonInfo: PokemonInfo): InfoViewModel
+        fun create(pokemon: Pokemon): InfoViewModel
     }
 
     companion object {
         fun provideFactory(
             assistedFactory: Factory,
-            pokemonInfo: PokemonInfo
+            pokemon: Pokemon
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
 
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return assistedFactory.create(pokemonInfo) as T
+                return assistedFactory.create(pokemon) as T
             }
         }
     }

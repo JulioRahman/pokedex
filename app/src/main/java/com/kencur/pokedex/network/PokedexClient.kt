@@ -1,7 +1,7 @@
 package com.kencur.pokedex.network
 
-import com.kencur.pokedex.model.PokemonInfo
-import com.kencur.pokedex.model.PokemonResponse
+import com.kencur.pokedex.model.Pagination
+import com.kencur.pokedex.model.Pokemon
 import com.skydoves.sandwich.ApiResponse
 import javax.inject.Inject
 
@@ -11,16 +11,16 @@ class PokedexClient @Inject constructor(
 
     suspend fun fetchPokemonList(
         page: Int
-    ): ApiResponse<PokemonResponse> =
+    ): ApiResponse<Pagination> =
         pokedexService.fetchPokemonList(
             limit = PAGING_SIZE,
             offset = page * PAGING_SIZE
         )
 
-    suspend fun fetchPokemonInfo(
+    suspend fun fetchPokemon(
         name: String
-    ): ApiResponse<PokemonInfo> =
-        pokedexService.fetchPokemonInfo(
+    ): ApiResponse<Pokemon> =
+        pokedexService.fetchPokemon(
             name = name
         )
 

@@ -34,7 +34,7 @@
         tools:layout="@layout/fragment_info">
 
         <argument
-            android:name="pokemonInfo"
-            app:argType="com.kencur.pokedex.model.PokemonInfo" />
+            android:name="pokemon"
+            app:argType="com.kencur.pokedex.model.Pokemon" />
     </fragment>
 </navigation>
