@@ -27,46 +27,46 @@ class PokedexRepository @Inject constructor(
         onComplete: () -> Unit,
         onError: (String?) -> Unit
     ) = flow {
-        val pokemonList = pokemonDao.getPokemonList(page)
+        val pokemonList = pokemonDao.getAllByPage(page)
         if (pokemonList.isEmpty()) {
             val pokemonListResponse = pokedexClient.fetchPokemonList(page = page)
             pokemonListResponse.suspendOnSuccess {
                 data.results.forEach { pokemonResult ->
-                    val pokemon = pokemonDao.getPokemon(pokemonResult.name)
+                    val pokemon = pokemonDao.get(pokemonResult.name)
                     if (pokemon == null) {
                         val pokemonResponse = pokedexClient.fetchPokemon(name = pokemonResult.name)
                         pokemonResponse.suspendOnSuccess {
-                            pokemonDao.insertPokemon(data.copy(page = page))
+                            pokemonDao.insert(data.copy(page = page))
                         }.onFailure {
                             onError(message())
                         }
                     }
                 }
-                emit(pokemonDao.getAllPokemonList(page).sortedBy { it.id })
+                emit(pokemonDao.getAllUntilPage(page).sortedBy { it.id })
             }.onFailure {
                 onError(message())
             }
         } else {
-            emit(pokemonDao.getAllPokemonList(page).sortedBy { it.id })
+            emit(pokemonDao.getAllUntilPage(page).sortedBy { it.id })
         }
     }.onStart { onStart() }.onCompletion { onComplete() }.flowOn(ioDispatcher)
 
     @WorkerThread
-    fun isFavoritePokemon(id: Int) = pokemonDao.isFavoritePokemon(id)
+    fun isFavoritePokemon(id: Int) = pokemonDao.isFavorite(id)
 
     @WorkerThread
     suspend fun addFavoritePokemon(pokemon: Pokemon) =
-        pokemonDao.addFavoritePokemon(pokemon)
+        pokemonDao.addFavorite(pokemon)
 
     @WorkerThread
     suspend fun removeFavoritePokemon(pokemon: Pokemon) =
-        pokemonDao.removeFavoritePokemon(pokemon)
+        pokemonDao.removeFavorite(pokemon)
 
     @WorkerThread
     fun fetchFavoritePokemonList(
         onStart: () -> Unit,
         onComplete: () -> Unit
     ) = flow {
-        emit(pokemonDao.getFavoritePokemonList())
+        emit(pokemonDao.getAllFavorite())
     }.onStart { onStart() }.onCompletion { onComplete() }.flowOn(ioDispatcher)
 }
